@@ -162,4 +162,8 @@ FEATURES:
 * TransformPoint and InverseTransformPoint can take a target ancestor as argument
 * Camera windows can be configured to not clear the background (useful for UI overlays)
 
+----- 2022/2023 b version:
 
+BUG FIXES:
+* Fixing breaking change in Tiled 1.9: TiledMapParser with with both class and type.
+* GameObject.Render: uses the proper (efficient) type of GetChildren
