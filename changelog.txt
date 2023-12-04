@@ -167,3 +167,6 @@ FEATURES:
 BUG FIXES:
 * Fixing breaking change in Tiled 1.9: TiledMapParser with with both class and type.
 * GameObject.Render: uses the proper (efficient) type of GetChildren
+
+FEATURE:
+* Adding System reference for easy access to default libraries
