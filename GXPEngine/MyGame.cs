@@ -7,7 +7,7 @@ public class MyGame : Game
 
 	public MyGame() : base(800, 600, false)		// Create a window that's 800x600 and NOT fullscreen
 	{
-		_sprite = new Sprite("colors.png");
+		_sprite = new Sprite("assets/colors.png");
 		_sprite.SetXY(100, 100);
 		this.AddChild(_sprite);
 	}
