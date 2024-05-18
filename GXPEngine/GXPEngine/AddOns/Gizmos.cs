@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using GXPEngine;
 using GXPEngine.Core;
-using GXPEngine.OpenGL;
+using static GXPEngine.Core.GLContext;
+using EnableCap = Silk.NET.OpenGL.Legacy.EnableCap;
+using PrimitiveType = Silk.NET.OpenGL.Legacy.PrimitiveType;
+using VertexPointerType = Silk.NET.OpenGL.Legacy.VertexPointerType;
 
 namespace GXPEngine {
 	/// <summary>
@@ -176,17 +178,20 @@ namespace GXPEngine {
 		/// You can give color and line width. If no values are given (=0), the default values are
 		/// used. These can be set using SetStyle, SetColor and SetWidth.
 		/// </summary>
-		public static void RenderLine(float x1, float y1, float x2, float y2, uint pColor = 0xffffffff, uint pLineWidth = 1, bool pGlobalCoords = false) {
+		public static unsafe void RenderLine(float x1, float y1, float x2, float y2, uint pColor = 0xffffffff, uint pLineWidth = 1, bool pGlobalCoords = false) {
 			if (pGlobalCoords) GL.LoadIdentity();
-			GL.Disable(GL.TEXTURE_2D);
+			GL.Disable(EnableCap.Texture2D);
 			GL.LineWidth(pLineWidth);
-			GL.Color4ub((byte)((pColor >> 16) & 0xff), (byte)((pColor >> 8) & 0xff), (byte)((pColor) & 0xff), (byte)((pColor >> 24) & 0xff));
-			float[] vertices = new float[] { x1, y1, x2, y2 };
-			GL.EnableClientState(GL.VERTEX_ARRAY);
-			GL.VertexPointer(2, GL.FLOAT, 0, vertices);
-			GL.DrawArrays(GL.LINES, 0, 2);
-			GL.DisableClientState(GL.VERTEX_ARRAY);
-			GL.Enable(GL.TEXTURE_2D);
+			GL.Color4((byte)((pColor >> 16) & 0xff), (byte)((pColor >> 8) & 0xff), (byte)((pColor) & 0xff), (byte)((pColor >> 24) & 0xff));
+			float[] vertices = { x1, y1, x2, y2 };
+			GL.EnableClientState(EnableCap.VertexArray);
+			fixed (float* ptr = vertices)
+			{
+				GL.VertexPointer(2, VertexPointerType.Float, 0, ptr);
+			}
+			GL.DrawArrays(PrimitiveType.Lines, 0, 2);
+			GL.DisableClientState(EnableCap.VertexArray);
+			GL.Enable(EnableCap.Texture2D);
 		}
 
 		void DrawLines(GLContext glContext) {

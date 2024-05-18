@@ -1,5 +1,7 @@
-using GXPEngine.OpenGL;
 using GXPEngine.Core;
+
+using static GXPEngine.Core.GLContext;
+using ClearBufferMask = Silk.NET.OpenGL.Legacy.ClearBufferMask;
 
 namespace GXPEngine {
 	/// <summary>
@@ -129,7 +131,7 @@ namespace GXPEngine {
 				var oldRange = main.RenderRange;
 				SetRenderRange();
 				main.SetViewport (_windowX, _windowY, _width, _height, false);
-				if (_clear) GL.Clear(GL.COLOR_BUFFER_BIT);
+				if (_clear) GL.Clear(ClearBufferMask.ColorBufferBit);
 				current.Render (glContext);
 				main.SetViewport ((int)oldRange.left, (int)oldRange.top, (int)oldRange.width, (int)oldRange.height);
 			}

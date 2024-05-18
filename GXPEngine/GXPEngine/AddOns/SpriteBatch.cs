@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using GXPEngine.Core;
-using GXPEngine.OpenGL;
+using static GXPEngine.Core.GLContext;
+using EnableCap = Silk.NET.OpenGL.Legacy.EnableCap;
+using PrimitiveType = Silk.NET.OpenGL.Legacy.PrimitiveType;
+using VertexPointerType = Silk.NET.OpenGL.Legacy.VertexPointerType;
+using TexCoordPointerType = Silk.NET.OpenGL.Legacy.TexCoordPointerType;
 
 namespace GXPEngine {
 	/// <summary>
@@ -221,16 +225,22 @@ namespace GXPEngine {
 			numberOfVertices = verts.Length / 2;
 		}
 
-		public void DrawBuffers(GLContext glContext) {
+		public unsafe void DrawBuffers(GLContext glContext) {
 			_texture.Bind();
 
-			GL.EnableClientState(GL.TEXTURE_COORD_ARRAY);
-			GL.EnableClientState(GL.VERTEX_ARRAY);
-			GL.TexCoordPointer(2, GL.FLOAT, 0, uvs);
-			GL.VertexPointer(2, GL.FLOAT, 0, verts);
-			GL.DrawArrays(GL.QUADS, 0, numberOfVertices);
-			GL.DisableClientState(GL.VERTEX_ARRAY);
-			GL.DisableClientState(GL.TEXTURE_COORD_ARRAY);
+			GL.EnableClientState(EnableCap.TextureCoordArray);
+			GL.EnableClientState(EnableCap.VertexArray);
+			fixed (float* ptr = uvs)
+			{
+				GL.TexCoordPointer(2, TexCoordPointerType.Float, 0, ptr);
+			}
+			fixed (float* ptr = verts)
+			{
+				GL.VertexPointer(2, VertexPointerType.Float, 0, ptr);
+			}
+			GL.DrawArrays(PrimitiveType.Quads, 0, (uint)numberOfVertices);
+			GL.DisableClientState(EnableCap.VertexArray);
+			GL.DisableClientState(EnableCap.TextureCoordArray);
 
 			_texture.Unbind();
 		}

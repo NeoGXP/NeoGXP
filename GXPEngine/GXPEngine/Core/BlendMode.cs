@@ -1,5 +1,6 @@
 ﻿using System;
-using GXPEngine.OpenGL;
+using GXPEngine.Core;
+using Silk.NET.OpenGL.Legacy;
 
 namespace GXPEngine
 {
@@ -13,7 +14,7 @@ namespace GXPEngine
 		/// (newColor = spriteColor * spriteAlpha + oldColor * (1-spriteAlpha))
 		/// </summary>
 		public static readonly BlendMode NORMAL = new BlendMode (
-			"Normal", () => {	GL.BlendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);	}
+			"Normal", () => {	GLContext.GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);	}
 		);
 
 		/// <summary>
@@ -21,7 +22,7 @@ namespace GXPEngine
 		/// (newColor = spriteColor * 1 + oldColor * (1-spriteAlpha))
 		/// </summary>
 		public static readonly BlendMode PREMULTIPLIED = new BlendMode(
-			"Premultiplied", () => { GL.BlendFunc(GL.ONE, GL.ONE_MINUS_SRC_ALPHA); }
+			"Premultiplied", () => { GLContext.GL.BlendFunc(BlendingFactor.One, BlendingFactor.OneMinusSrcAlpha); }
 		);
 
 		/// <summary>
@@ -29,7 +30,7 @@ namespace GXPEngine
 		/// (newColor = spriteColor * oldColor + oldColor * 0)
 		/// </summary>
 		public static readonly BlendMode MULTIPLY = new BlendMode (
-			"Multiply", () => {	GL.BlendFunc(GL.DST_COLOR, GL.ZERO);	}
+			"Multiply", () => {	GLContext.GL.BlendFunc(BlendingFactor.DstColor, BlendingFactor.Zero);	}
 		);
 
 		/// <summary>
@@ -37,7 +38,7 @@ namespace GXPEngine
 		/// (newColor = spriteColor * oldColor + oldColor * 1)
 		/// </summary>
 		public static readonly BlendMode LIGHTING = new BlendMode(
-			"Lighting", () => { GL.BlendFunc(GL.DST_COLOR, GL.ONE); }
+			"Lighting", () => { GLContext.GL.BlendFunc(BlendingFactor.DstColor, BlendingFactor.One); }
 		);
 
 		/// <summary>
@@ -45,7 +46,7 @@ namespace GXPEngine
 		/// (newColor = spriteColor * 1 + oldColor * 1)
 		/// </summary>
 		public static readonly BlendMode ADDITIVE = new BlendMode(
-			"Additive", () => { GL.BlendFunc(GL.ONE, GL.ONE); }
+			"Additive", () => { GLContext.GL.BlendFunc(BlendingFactor.One, BlendingFactor.One); }
 		);
 
 		/// <summary>
@@ -53,7 +54,7 @@ namespace GXPEngine
 		/// (newColor = spriteColor * (1-oldColorAlpha) + oldColor * oldColorAlpha)
 		/// </summary>
 		public static readonly BlendMode FILLEMPTY = new BlendMode(
-			"Fill", () => { GL.BlendFunc(GL.ONE_MINUS_DST_ALPHA, GL.DST_ALPHA); }
+			"Fill", () => { GLContext.GL.BlendFunc(BlendingFactor.OneMinusDstAlpha, BlendingFactor.DstAlpha); }
 		);
 
 		public delegate void Action();

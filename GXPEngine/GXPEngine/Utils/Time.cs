@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System;
+using static GXPEngine.Core.GLContext;
 
 namespace GXPEngine
 {
@@ -27,7 +28,7 @@ namespace GXPEngine
 		/// The time.
 		/// </value>
 		public static int time {
-			get { return (int)(OpenGL.GL.glfwGetTime()*1000); }
+			get { return (int)(GLFW.GetTime()*1000); }
 		}
 		
 		/// <summary>

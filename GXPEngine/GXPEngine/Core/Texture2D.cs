@@ -4,8 +4,14 @@ using System.Collections;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using static GXPEngine.Core.GLContext;
+using GLEnum = Silk.NET.OpenGL.Legacy.GLEnum;
+using InternalFormat = Silk.NET.OpenGL.Legacy.InternalFormat;
+using PixelFormat = Silk.NET.OpenGL.Legacy.PixelFormat;
+using PixelType = Silk.NET.OpenGL.Legacy.PixelType;
+using TextureParameterName = Silk.NET.OpenGL.Legacy.TextureParameterName;
+using TextureTarget = Silk.NET.OpenGL.Legacy.TextureTarget;
 
-using GXPEngine.OpenGL;
 
 namespace GXPEngine.Core
 {
@@ -17,7 +23,7 @@ namespace GXPEngine.Core
 		const int UNDEFINED_GLTEXTURE 	= 0;
 		
 		private Bitmap _bitmap;
-		private int[] _glTexture;
+		private uint _glTexture;
 		private string _filename = "";
 		private int count = 0;
 		private bool stayInCache = false;
@@ -103,7 +109,7 @@ namespace GXPEngine.Core
 		public void Bind() {
 			if (lastBound == this) return;
 			lastBound = this;
-			GL.BindTexture(GL.TEXTURE_2D, _glTexture[0]);
+			GL.BindTexture(TextureTarget.Texture2D, _glTexture);
 		}
 
 		//------------------------------------------------------------------------------------------------------------------------
@@ -140,44 +146,41 @@ namespace GXPEngine.Core
 		//------------------------------------------------------------------------------------------------------------------------
 		private void CreateGLTexture ()
 		{
-			if (_glTexture != null)
-				if (_glTexture.Length > 0)
-					if (_glTexture[0] != UNDEFINED_GLTEXTURE)
-						destroyGLTexture ();
-				
-			_glTexture = new int[1];
+			if (_glTexture != UNDEFINED_GLTEXTURE)
+				destroyGLTexture ();
+
 			if (_bitmap == null)
 				_bitmap = new Bitmap (64, 64);
 
-			GL.GenTextures (1, _glTexture);
-			
-			GL.BindTexture (GL.TEXTURE_2D, _glTexture[0]);
+			GL.GenTextures (1, out _glTexture);
+
+			GL.BindTexture (TextureTarget.Texture2D, _glTexture);
 			if (Game.main.PixelArt) {
-				GL.TexParameteri (GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
-				GL.TexParameteri (GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
+				GL.TexParameterI(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (uint)GLEnum.Nearest);
+				GL.TexParameterI (TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (uint)GLEnum.Nearest);
 			} else {
-				GL.TexParameteri (GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.LINEAR);
-				GL.TexParameteri (GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.LINEAR);
+				GL.TexParameterI (TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (uint)GLEnum.Linear);
+				GL.TexParameterI (TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (uint)GLEnum.Linear);
 			}
-			GL.TexParameteri (GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.GL_CLAMP_TO_EDGE_EXT);
-			GL.TexParameteri (GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.GL_CLAMP_TO_EDGE_EXT);	
-			
+			GL.TexParameterI (TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (uint)GLEnum.ClampToEdge);
+			GL.TexParameterI (TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (uint)GLEnum.ClampToEdge);
+
 			UpdateGLTexture();
-			GL.BindTexture (GL.TEXTURE_2D, 0);
+			GL.BindTexture (TextureTarget.Texture2D, 0);
 			lastBound = null;
 		}
-		
+
 		//------------------------------------------------------------------------------------------------------------------------
 		//														UpdateGLTexture()
 		//------------------------------------------------------------------------------------------------------------------------
-		public void UpdateGLTexture() {
-			BitmapData data = _bitmap.LockBits (new System.Drawing.Rectangle (0, 0, _bitmap.Width, _bitmap.Height),
-			                                     ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			               			
-			GL.BindTexture (GL.TEXTURE_2D, _glTexture[0]);
-			GL.TexImage2D(GL.TEXTURE_2D, 0, GL.RGBA, _bitmap.Width, _bitmap.Height, 0,
-			              GL.BGRA, GL.UNSIGNED_BYTE, data.Scan0);
-			              
+		public unsafe void UpdateGLTexture() {
+			BitmapData data = _bitmap.LockBits (new System.Drawing.Rectangle(0, 0, _bitmap.Width, _bitmap.Height),
+				ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+			GL.BindTexture(TextureTarget.Texture2D, _glTexture);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgba, (uint)_bitmap.Width, (uint)_bitmap.Height, 0,
+				PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0.ToPointer());
+
 			_bitmap.UnlockBits(data);
 			lastBound = null;
 		}
@@ -187,7 +190,7 @@ namespace GXPEngine.Core
 		//------------------------------------------------------------------------------------------------------------------------
 		private void destroyGLTexture() {
 			GL.DeleteTextures(1, _glTexture);
-			_glTexture[0] = UNDEFINED_GLTEXTURE;
+			_glTexture = UNDEFINED_GLTEXTURE;
 		}
 
 		//------------------------------------------------------------------------------------------------------------------------
@@ -206,11 +209,11 @@ namespace GXPEngine.Core
 		}
 
 		public bool wrap {
-			set { 
-				GL.BindTexture (GL.TEXTURE_2D, _glTexture[0]);
-				GL.TexParameteri (GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, value?GL.GL_REPEAT:GL.GL_CLAMP_TO_EDGE_EXT);
-				GL.TexParameteri (GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, value?GL.GL_REPEAT:GL.GL_CLAMP_TO_EDGE_EXT);	
-				GL.BindTexture (GL.TEXTURE_2D, 0);
+			set {
+				GL.BindTexture (TextureTarget.Texture2D, _glTexture);
+				GL.TexParameterI (TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (uint)(value?GLEnum.Repeat:GLEnum.ClampToEdge));
+				GL.TexParameterI (TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (uint)(value?GLEnum.Repeat:GLEnum.ClampToEdge));
+				GL.BindTexture (TextureTarget.Texture2D, 0);
 				lastBound = null;
 			}
 		}
