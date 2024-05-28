@@ -170,3 +170,6 @@ BUG FIXES:
 
 FEATURE:
 * Adding System reference for easy access to default libraries
+
+----- 2023/2024 (Road towards NeoGXP) version (TechnicJelle):
+* Added SaveFrame function, to save the last rendered frame to an image on disk

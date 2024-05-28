@@ -4,6 +4,9 @@
 using System;
 using Silk.NET.GLFW;
 using Silk.NET.OpenGL.Legacy;
+using System.Drawing;
+using System.Drawing.Imaging;
+using PixelFormat = Silk.NET.OpenGL.Legacy.PixelFormat;
 
 namespace GXPEngine.Core {
 
@@ -405,6 +408,24 @@ namespace GXPEngine.Core {
 				} else {
 					_targetFrameRate = value;
 				}
+			}
+		}
+
+		//------------------------------------------------------------------------------------------------------------------------
+		//														SaveFrame()
+		//------------------------------------------------------------------------------------------------------------------------
+		public unsafe void SaveFrame(string filename)
+		{
+			int[] buffer = new int[width * height * 3];
+			fixed (void* ptr = buffer)
+			{
+				GL.ReadPixels(0, 0, (uint)width, (uint)height, PixelFormat.Bgr, PixelType.UnsignedByte, ptr);
+				Bitmap bmp = new Bitmap(width, height);
+				BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+				data.Scan0 = (IntPtr)ptr;
+				bmp.UnlockBits(data);
+				bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
+				bmp.Save(filename);
 			}
 		}
 

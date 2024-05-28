@@ -316,6 +316,17 @@ namespace GXPEngine
 			output += _updateManager.GetDiagnostics (); 
 			return output;
 		}
+
+		//------------------------------------------------------------------------------------------------------------------------
+		//														SaveFrame()
+		//------------------------------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// Saves the last rendered frame to a file.
+		/// </summary>
+		/// <param name="filename">The file name</param>
+		public void SaveFrame(string filename) {
+			_glContext.SaveFrame(filename);
+		}
 	}
 }
 

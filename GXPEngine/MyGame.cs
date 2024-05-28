@@ -12,6 +12,7 @@ public class MyGame : Game
 	private readonly Sound _ping;	// Create a sound
 
 	private Vector2 _dir;
+	private int _frameCount = 0;
 
 	public MyGame() : base(800, 600, false)		// Create a window that's 800x600 and NOT fullscreen
 	{
@@ -102,6 +103,12 @@ public class MyGame : Game
 
 		Gizmos.SetColor(0, 255, 0);
 		Gizmos.DrawArrow(150, 400, _dir.x * 50, _dir.y * 50);
+
+		if (_frameCount == 1)
+		{
+			SaveFrame("test.png");
+		}
+		_frameCount++;
 	}
 
 	static void Main()							// Main() is the first method that's called when the program is run
