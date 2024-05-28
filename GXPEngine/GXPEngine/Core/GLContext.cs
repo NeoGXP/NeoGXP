@@ -127,20 +127,18 @@ namespace GXPEngine.Core {
 			{
 				if (key == Keys.Unknown) return;
 				int keyValue = (int)key;
-				bool press = action == InputAction.Press;
-				if (press) { keydown[keyValue] = true; anyKeyDown = true; keyPressedCount++; }
-				else { keyup[keyValue] = true; keyPressedCount--; }
-				keys[keyValue] = press;
+				if (action == InputAction.Press) { keydown[keyValue] = true; anyKeyDown = true; keyPressedCount++; }
+				else if(action == InputAction.Release) { keyup[keyValue] = true; keyPressedCount--; }
+				keys[keyValue] = action is InputAction.Press or InputAction.Repeat;
 			});
 
 
 			GLFW.SetMouseButtonCallback(_window, (handle, button, action, mods) =>
 			{
 				int buttonValue = (int)button;
-				bool press = action == InputAction.Press;
-				if (press) mousehits[buttonValue] = true;
-				else mouseup[buttonValue] = true;
-				buttons[buttonValue] = press;
+				if (action == InputAction.Press) mousehits[buttonValue] = true;
+				else if (action == InputAction.Release) mouseup[buttonValue] = true;
+				buttons[buttonValue] = action is InputAction.Press or InputAction.Repeat;
 			});
 
 			GLFW.SetFramebufferSizeCallback(_window, FramebufferSizeCallback);
