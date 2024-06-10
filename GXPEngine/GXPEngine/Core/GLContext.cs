@@ -414,7 +414,7 @@ namespace GXPEngine.Core {
 		//------------------------------------------------------------------------------------------------------------------------
 		public unsafe void SaveFrame(string filename)
 		{
-			int[] buffer = new int[width * height * 3];
+			byte[] buffer = new byte[width * height * 3];
 			fixed (void* ptr = buffer)
 			{
 				GL.ReadPixels(0, 0, (uint)width, (uint)height, PixelFormat.Bgr, PixelType.UnsignedByte, ptr);
