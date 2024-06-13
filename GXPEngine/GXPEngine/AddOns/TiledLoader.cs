@@ -1,8 +1,7 @@
 ﻿using System;
 using GXPEngine;
 using GXPEngine.Core;
-using System.Drawing;
-using System.Drawing.Text;
+using SkiaSharp;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
@@ -181,8 +180,8 @@ namespace TiledMapParser {
 			} else if (obj.textField.bold == 1 && obj.textField.italic == 0) {
 				f = FontStyle.Bold;
 			}
-			message.TextFont(new Font(obj.textField.font, Mathf.Round(obj.textField.fontSize * scaleMultiplier), f, GraphicsUnit.Pixel));
-			message.graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit; //AntiAlias;
+			message.TextFont(new SKFont(SKTypeface.FromFamilyName(obj.textField.font, f.ToSkiaFontStyle()), Mathf.Round(obj.textField.fontSize * scaleMultiplier) * Utils.FONT_SCALE_FIX));
+			message.font.Edging = SKFontEdging.Antialias;
 
 			// Set text alignment:
 			message.TextAlign(

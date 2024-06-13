@@ -1,5 +1,4 @@
 using System;									// System contains a lot of default C# libraries
-using System.Drawing;							// System.Drawing contains Colors
 using GXPEngine;								// GXPEngine contains the engine
 using GXPEngine.Core;							// GXPEngine.Core contains Vector2
 
@@ -25,28 +24,28 @@ public class MyGame : Game
 		_easyDraw.Fill(255, 0, 0);
 
 		//Default font
-		Console.WriteLine("Font name: " + _easyDraw.font.Name +"\n Font system name:" + _easyDraw.font.SystemFontName + "\n Original name: " + _easyDraw.font.OriginalFontName + "\n Size: " + _easyDraw.font.Size + "\n Points: " + _easyDraw.font.SizeInPoints);
+		Console.WriteLine("Font name: " + _easyDraw.font.Typeface.FamilyName + "\n Size: " + _easyDraw.font.Size);
 		_easyDraw.TextAlign(CenterMode.Min, CenterMode.Min);
 		_easyDraw.Text("Hello, World!", 200, 0);
 		_easyDraw.Ellipse(200, 0, 3, 3);
 
 		//Loaded from file (normal)
 		_easyDraw.TextFont(Utils.LoadFont("assets/Roboto/Roboto-Regular.ttf", 15));
-		Console.WriteLine("Font name: " + _easyDraw.font.Name + "\n Font system name:" + _easyDraw.font.SystemFontName + "\n Original name: " + _easyDraw.font.OriginalFontName + "\n Size: " + _easyDraw.font.Size + "\n Points: " + _easyDraw.font.SizeInPoints);
+		Console.WriteLine("Font name: " + _easyDraw.font.Typeface.FamilyName + "\n Size: " + _easyDraw.font.Size);
 		_easyDraw.TextAlign(CenterMode.Center, CenterMode.Center);
 		_easyDraw.Text("Hello, World!", 260, 50);
 		_easyDraw.Ellipse(260, 50, 3, 3);
 
 		//Loaded from file (bold)
-		_easyDraw.TextFont(Utils.LoadFont("assets/Roboto/Roboto-Regular.ttf", 15, FontStyle.Bold));
-		Console.WriteLine("Font name: " + _easyDraw.font.Name + "\n Font system name:" + _easyDraw.font.SystemFontName + "\n Original name: " + _easyDraw.font.OriginalFontName + "\n Size: " + _easyDraw.font.Size + "\n Points: " + _easyDraw.font.SizeInPoints);
+		_easyDraw.TextFont(Utils.LoadFont("assets/Roboto/Roboto-Bold.ttf", 15));
+		Console.WriteLine("Font name: " + _easyDraw.font.Typeface.FamilyName + "\n Size: " + _easyDraw.font.Size);
 		_easyDraw.TextAlign(CenterMode.Max, CenterMode.Max);
 		_easyDraw.Text("Hello, World!", 325, 100);
 		_easyDraw.Ellipse(325, 100, 3, 3);
 
 		//System font
 		_easyDraw.TextFont("Comic Sans MS", 15, FontStyle.Bold | FontStyle.Italic);
-		Console.WriteLine("Font name: " + _easyDraw.font.Name + "\n Font system name:" + _easyDraw.font.SystemFontName + "\n Original name: " + _easyDraw.font.OriginalFontName + "\n Size: " + _easyDraw.font.Size + "\n Points: " + _easyDraw.font.SizeInPoints);
+		Console.WriteLine("Font name: " + _easyDraw.font.Typeface.FamilyName + "\n Size: " + _easyDraw.font.Size);
 		_easyDraw.TextAlign(CenterMode.Center, CenterMode.Center);
 		_easyDraw.Text("Hello, World!", 260, 120);
 		_easyDraw.Ellipse(260, 120, 3, 3);

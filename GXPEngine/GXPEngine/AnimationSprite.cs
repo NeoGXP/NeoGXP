@@ -1,5 +1,6 @@
 using System;
 using GXPEngine.Core;
+using SkiaSharp;
 
 namespace GXPEngine
 {
@@ -76,7 +77,7 @@ namespace GXPEngine
 		/// <param name="addCollider">
 		/// If <c>true</c>, this sprite will have a collider that will be added to the collision manager.
 		/// </param> 
-		public AnimationSprite (System.Drawing.Bitmap bitmap, int cols, int rows, int frames=-1, bool addCollider=true) : base(bitmap,addCollider)
+		public AnimationSprite (SKBitmap bitmap, int cols, int rows, int frames=-1, bool addCollider=true) : base(bitmap,addCollider)
 		{
 			name = "BMP " + bitmap.Width + "x" + bitmap.Height;
 			initializeAnimFrames(cols, rows, frames);

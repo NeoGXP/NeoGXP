@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace GXPEngine;
+﻿namespace GXPEngine;
 
 public class ShapeTest : Game
 {

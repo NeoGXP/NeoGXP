@@ -1,5 +1,6 @@
 using System;
 using GXPEngine.Core;
+using SkiaSharp;
 
 namespace GXPEngine
 {
@@ -22,7 +23,7 @@ namespace GXPEngine
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GXPEngine.Sprite"/> class.
-		/// Specify a System.Drawing.Bitmap to use. Bitmaps will not be cached.
+		/// Specify a SKBitmap to use. Bitmaps will not be cached.
 		/// </summary>
 		/// <param name='bitmap'>
 		/// Bitmap.
@@ -30,7 +31,7 @@ namespace GXPEngine
 		/// <param name="addCollider">
 		/// If <c>true</c>, this sprite will have a collider that will be added to the collision manager.
 		/// </param> 
-		public Sprite (System.Drawing.Bitmap bitmap, bool addCollider=true) : base(addCollider)
+		public Sprite (SKBitmap bitmap, bool addCollider=true) : base(addCollider)
 		{
 			if (Game.main == null) {
 				throw new Exception ("Sprites cannot be created before creating a Game instance.");

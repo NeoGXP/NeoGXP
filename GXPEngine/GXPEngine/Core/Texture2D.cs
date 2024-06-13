@@ -1,9 +1,7 @@
+using SkiaSharp;
 using System;
 using System.Collections;
 
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
 using static GXPEngine.Core.GLContext;
 using GLEnum = Silk.NET.OpenGL.Legacy.GLEnum;
 using InternalFormat = Silk.NET.OpenGL.Legacy.InternalFormat;
@@ -22,7 +20,7 @@ namespace GXPEngine.Core
 		
 		const int UNDEFINED_GLTEXTURE 	= 0;
 		
-		private Bitmap _bitmap;
+		private SKBitmap _bitmap;
 		private uint _glTexture;
 		private string _filename = "";
 		private int count = 0;
@@ -33,12 +31,12 @@ namespace GXPEngine.Core
 		//------------------------------------------------------------------------------------------------------------------------
 		public Texture2D (int width, int height) {
 			if (width == 0) if (height == 0) return;
-			SetBitmap (new Bitmap(width, height));
+			SetBitmap (new SKBitmap(width, height));
 		}
 		public Texture2D (string filename) {
 			Load (filename);
 		}
-		public Texture2D (Bitmap bitmap) {
+		public Texture2D (SKBitmap bitmap) {
 			SetBitmap (bitmap);
 		}
 
@@ -78,7 +76,7 @@ namespace GXPEngine.Core
 		//------------------------------------------------------------------------------------------------------------------------
 		//														bitmap
 		//------------------------------------------------------------------------------------------------------------------------
-		public Bitmap bitmap {
+		public SKBitmap bitmap {
 			get { return _bitmap; }
 		}
 		
@@ -124,9 +122,9 @@ namespace GXPEngine.Core
 		//------------------------------------------------------------------------------------------------------------------------
 		private void Load(string filename) {
 			_filename = filename;
-			Bitmap bitmap;
+			SKBitmap bitmap;
 			try {
-				bitmap = new Bitmap(filename);
+				bitmap = SKBitmap.Decode(filename);
 			} catch {
 				throw new Exception("Image " + filename + " cannot be found.");
 			}
@@ -136,7 +134,7 @@ namespace GXPEngine.Core
 		//------------------------------------------------------------------------------------------------------------------------
 		//														SetBitmap()
 		//------------------------------------------------------------------------------------------------------------------------
-		private void SetBitmap(Bitmap bitmap) {
+		private void SetBitmap(SKBitmap bitmap) {
 			_bitmap = bitmap;
 			CreateGLTexture ();
 		}
@@ -150,7 +148,7 @@ namespace GXPEngine.Core
 				destroyGLTexture ();
 
 			if (_bitmap == null)
-				_bitmap = new Bitmap (64, 64);
+				_bitmap = new SKBitmap (64, 64);
 
 			GL.GenTextures (1, out _glTexture);
 
@@ -174,14 +172,10 @@ namespace GXPEngine.Core
 		//														UpdateGLTexture()
 		//------------------------------------------------------------------------------------------------------------------------
 		public unsafe void UpdateGLTexture() {
-			BitmapData data = _bitmap.LockBits (new System.Drawing.Rectangle(0, 0, _bitmap.Width, _bitmap.Height),
-				ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
 			GL.BindTexture(TextureTarget.Texture2D, _glTexture);
 			GL.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgba, (uint)_bitmap.Width, (uint)_bitmap.Height, 0,
-				PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0.ToPointer());
+				PixelFormat.Bgra, PixelType.UnsignedByte, bitmap.GetPixels().ToPointer());
 
-			_bitmap.UnlockBits(data);
 			lastBound = null;
 		}
 
@@ -197,9 +191,9 @@ namespace GXPEngine.Core
 		//														Clone()
 		//------------------------------------------------------------------------------------------------------------------------
 		public Texture2D Clone (bool deepCopy=false) {
-			Bitmap bitmap;
+			SKBitmap bitmap;
 			if (deepCopy) {
-				bitmap = _bitmap.Clone () as Bitmap;
+				bitmap = _bitmap.Copy();
 			} else {
 				bitmap = _bitmap;
 			}

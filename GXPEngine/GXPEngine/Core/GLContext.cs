@@ -4,8 +4,8 @@
 using System;
 using Silk.NET.GLFW;
 using Silk.NET.OpenGL.Legacy;
-using System.Drawing;
-using System.Drawing.Imaging;
+using SkiaSharp;
+using System.IO;
 using PixelFormat = Silk.NET.OpenGL.Legacy.PixelFormat;
 
 namespace GXPEngine.Core {
@@ -414,17 +414,27 @@ namespace GXPEngine.Core {
 		//------------------------------------------------------------------------------------------------------------------------
 		public unsafe void SaveFrame(string filename)
 		{
-			byte[] buffer = new byte[width * height * 3];
+			byte[] buffer = new byte[width * height * 4];
 			fixed (void* ptr = buffer)
 			{
-				GL.ReadPixels(0, 0, (uint)width, (uint)height, PixelFormat.Bgr, PixelType.UnsignedByte, ptr);
-				Bitmap bmp = new Bitmap(width, height);
-				BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-				data.Scan0 = (IntPtr)ptr;
-				bmp.UnlockBits(data);
-				bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
-				bmp.Save(filename);
+				GL.ReadPixels(0, 0, (uint)width, (uint)height, PixelFormat.Rgba, PixelType.UnsignedByte, ptr);
+				SKBitmap bmp = new SKBitmap(width, height, SKColorType.Rgba8888, SKAlphaType.Opaque);
+				bmp.SetPixels((IntPtr)ptr);
+				bmp = BitmapFlippedAndBackground(bmp);
+				using FileStream fileStream = new FileStream(filename, FileMode.Create);
+				bmp.Encode(fileStream, SKEncodedImageFormat.Png, 100);
 			}
+		}
+
+		private static SKBitmap BitmapFlippedAndBackground(SKBitmap bitmap)
+		{
+			SKBitmap flipped = new(bitmap.Width, bitmap.Height);
+			using SKCanvas canvas = new(flipped);
+			canvas.Clear(SKColors.Black);
+			canvas.Scale(1, -1, 0, bitmap.Height / 2.0f);
+			SKPaint paint = new() {BlendMode = SKBlendMode.Plus};
+			canvas.DrawBitmap(bitmap, 0, 0, paint);
+			return flipped;
 		}
 
 	}
