@@ -18,9 +18,12 @@ namespace GXPEngine
 		public CenterMode VerticalTextAlign=CenterMode.Max;
 		public CenterMode HorizontalShapeAlign=CenterMode.Center;
 		public CenterMode VerticalShapeAlign=CenterMode.Center;
-		public SKFont font		{ get; protected set;}
-		public SKPaint pen		{ get; protected set;} //outside lines
-		public SKPaint brush	{ get; protected set;} //interior colouring
+		[Obsolete("Use the methods instead.")] public SKFont font => _font;
+		[Obsolete("Use the methods instead.")] public SKPaint pen => _pen;
+		[Obsolete("Use the methods instead.")] public SKPaint brush => _brush;
+		protected SKFont _font;
+		protected SKPaint _pen; //outside lines
+		protected SKPaint _brush; //interior colouring
 		protected bool _stroke=true;
 		protected bool _fill=true;
 
@@ -57,17 +60,17 @@ namespace GXPEngine
 
 		void Initialize()
 		{
-			pen = new SKPaint{Color = SKColors.White, Style = SKPaintStyle.Stroke, StrokeWidth = 1, StrokeJoin = SKStrokeJoin.Miter, StrokeCap = SKStrokeCap.Butt};
-			brush = new SKPaint{Color = SKColors.White, Style = SKPaintStyle.Fill};
-			font = defaultFont;
+			_pen = new SKPaint{Color = SKColors.White, Style = SKPaintStyle.Stroke, StrokeWidth = 1, StrokeJoin = SKStrokeJoin.Miter, StrokeCap = SKStrokeCap.Butt};
+			_brush = new SKPaint{Color = SKColors.White, Style = SKPaintStyle.Fill};
+			_font = defaultFont;
 			if (!game.PixelArt) {
-				font.Edging = SKFontEdging.Antialias;
-				pen.IsAntialias = true;
-				brush.IsAntialias = true;
+				_font.Edging = SKFontEdging.Antialias;
+				_pen.IsAntialias = true;
+				_brush.IsAntialias = true;
 			} else {
-				font.Edging = SKFontEdging.Alias;
-				pen.IsAntialias = false;
-				brush.IsAntialias = false;
+				_font.Edging = SKFontEdging.Alias;
+				_pen.IsAntialias = false;
+				_brush.IsAntialias = false;
 			}
 		}
 
@@ -79,7 +82,7 @@ namespace GXPEngine
 		/// <param name="newFont">The new font (see also Utils.LoadFont)</param>
 		public void TextFont(SKFont newFont)
 		{
-			font = newFont;
+			_font = newFont;
 		}
 
 		/// <summary>
@@ -90,7 +93,7 @@ namespace GXPEngine
 		/// <param name="style">font style (e.g. FontStyle.Italic|FontStyle.Bold )</param>
 		public void TextFont(string fontName, float pointSize, FontStyle style = FontStyle.Regular)
 		{
-			font = new SKFont(SKTypeface.FromFamilyName(fontName, style.ToSkiaFontStyle()), pointSize * Utils.FONT_SCALE_FIX);
+			_font = new SKFont(SKTypeface.FromFamilyName(fontName, style.ToSkiaFontStyle()), pointSize * Utils.FONT_SCALE_FIX);
 		}
 
 		/// <summary>
@@ -99,7 +102,7 @@ namespace GXPEngine
 		/// <param name="pointSize">The font size in points</param>
 		public void TextSize(float pointSize) 
 		{
-			font = new SKFont (font.Typeface, pointSize * Utils.FONT_SCALE_FIX);
+			_font = new SKFont (_font.Typeface, pointSize * Utils.FONT_SCALE_FIX);
 		}
 
 		//////////// Setting Alignment for text, ellipses and rects
@@ -147,7 +150,7 @@ namespace GXPEngine
 		/// <param name="alpha">the opacity of the outline (from 0=transparent to 255=opaque)</param>
 		public void Stroke(SKColor newColor, int alpha=255)
 		{
-			pen.Color = Color.FromArgb (alpha, newColor);
+			_pen.Color = Color.FromArgb (alpha, newColor);
 			_stroke = true;
 		}
 
@@ -158,7 +161,7 @@ namespace GXPEngine
 		/// <param name="alpha">the opacity of the outline (from 0=transparent to 255=opaque)</param>
 		public void Stroke(int grayScale, int alpha=255) 
 		{
-			pen.Color = Color.FromArgb (alpha, grayScale, grayScale, grayScale);
+			_pen.Color = Color.FromArgb (alpha, grayScale, grayScale, grayScale);
 			_stroke = true;
 		}
 
@@ -171,7 +174,7 @@ namespace GXPEngine
 		/// <param name="alpha">The opacity of the outline (from 0=transparent to 255=opaque)</param>
 		public void Stroke(int red, int green, int blue, int alpha=255) 
 		{
-			pen.Color = Color.FromArgb (alpha, red, green, blue);
+			_pen.Color = Color.FromArgb (alpha, red, green, blue);
 			_stroke = true;
 		}
 
@@ -181,7 +184,7 @@ namespace GXPEngine
 		/// <param name="width">The width (in pixels)</param>
 		public void StrokeWeight(float width) 
 		{
-			pen.StrokeWidth = width;
+			_pen.StrokeWidth = width;
 			_stroke = true;
 		}
 
@@ -202,7 +205,7 @@ namespace GXPEngine
 		/// <param name="alpha">the fill opacity (from 0=transparent to 255=opaque)</param>
 		public void Fill(SKColor newColor, int alpha=255)
 		{
-			brush.Color = Color.FromArgb (alpha, newColor);
+			_brush.Color = Color.FromArgb (alpha, newColor);
 			_fill = true;
 		}
 
@@ -213,7 +216,7 @@ namespace GXPEngine
 		/// <param name="alpha">the fill opacity (from 0=transparent to 255=opaque)</param>
 		public void Fill(int grayScale, int alpha=255) 
 		{
-			brush.Color = Color.FromArgb (alpha, grayScale, grayScale, grayScale);
+			_brush.Color = Color.FromArgb (alpha, grayScale, grayScale, grayScale);
 			_fill = true;
 		}
 
@@ -226,7 +229,7 @@ namespace GXPEngine
 		/// <param name="alpha">The fill opacity (from 0=transparent to 255=opaque)</param>
 		public void Fill(int red, int green, int blue, int alpha=255) 
 		{
-			brush.Color = Color.FromArgb (alpha, red, green, blue);
+			_brush.Color = Color.FromArgb (alpha, red, green, blue);
 			_fill = true;
 		}
 
@@ -297,7 +300,7 @@ namespace GXPEngine
 			{
 				y -= theight / 2;
 			}
-			graphics.DrawText(text, x, y+theight, SKTextAlign.Left, font, brush); //left+BoundaryPadding/2,top+BoundaryPadding/2);
+			graphics.DrawText(text, x, y+theight, SKTextAlign.Left, _font, _brush); //left+BoundaryPadding/2,top+BoundaryPadding/2);
 		}
 
 		/// <summary>
@@ -340,7 +343,7 @@ namespace GXPEngine
 		/// <returns>width in pixels</returns>
 		public float TextWidth(string text)
 		{
-			font.MeasureText(text, out SKRect bounds);
+			_font.MeasureText(text, out SKRect bounds);
 			return bounds.Width;
 		}
 
@@ -351,7 +354,7 @@ namespace GXPEngine
 		/// <returns>height in pixels</returns>
 		public float TextHeight(string text) 
 		{
-			font.MeasureText(text, out SKRect bounds);
+			_font.MeasureText(text, out SKRect bounds);
 			return bounds.Height;
 		}
 
@@ -363,7 +366,7 @@ namespace GXPEngine
 		/// <param name="height">height in pixels</param>
 		public void TextDimensions(string text, out float width, out float height) 
 		{
-			font.MeasureText(text, out SKRect bounds);
+			_font.MeasureText(text, out SKRect bounds);
 			width = bounds.Width;
 			height = bounds.Height;
 		}
@@ -381,10 +384,10 @@ namespace GXPEngine
 		public void Rect(float x, float y, float width, float height) {
 			ShapeAlign (ref x, ref y, width, height);
 			if (_fill) {
-				graphics.DrawRect(x, y, width, height, brush);
+				graphics.DrawRect(x, y, width, height, _brush);
 			}
 			if (_stroke) {
-				graphics.DrawRect(x, y, width, height, pen);
+				graphics.DrawRect(x, y, width, height, _pen);
 			}
 		}
 
@@ -401,10 +404,10 @@ namespace GXPEngine
 			float hw = width / 2f;
 			float hh = height / 2f;
 			if (_fill) {
-				graphics.DrawOval(x+hw, y+hh, hw, hh, brush);
+				graphics.DrawOval(x+hw, y+hh, hw, hh, _brush);
 			}
 			if (_stroke) {
-				graphics.DrawOval(x+hw, y+hh, hw, hh, pen);
+				graphics.DrawOval(x+hw, y+hh, hw, hh, _pen);
 			}
 		}
 
@@ -423,10 +426,10 @@ namespace GXPEngine
 			ShapeAlign (ref x, ref y, width, height);
 			SKRect oval = SKRect.Create(x, y, width, height);
 			if (_fill) {
-				graphics.DrawArc(oval, startAngleDegrees, sweepAngleDegrees, true, brush);
+				graphics.DrawArc(oval, startAngleDegrees, sweepAngleDegrees, true, _brush);
 			}
 			if (_stroke) {
-				graphics.DrawArc(oval, startAngleDegrees, sweepAngleDegrees, false, pen);
+				graphics.DrawArc(oval, startAngleDegrees, sweepAngleDegrees, false, _pen);
 			}
 		}
 
@@ -439,7 +442,7 @@ namespace GXPEngine
 		/// <param name="y2">y coordinate of the end point</param>
 		public void Line(float x1, float y1, float x2, float y2) {
 			if (_stroke) {
-				graphics.DrawLine (x1, y1, x2, y2, pen);
+				graphics.DrawLine (x1, y1, x2, y2, _pen);
 			}
 		}
 
@@ -478,10 +481,10 @@ namespace GXPEngine
 			SKPath path = new();
 			path.AddPoly(pts, true);
 			if (_fill) {
-				graphics.DrawPath(path, brush);
+				graphics.DrawPath(path, _brush);
 			}
 			if (_stroke) {
-				graphics.DrawPath(path, pen);
+				graphics.DrawPath(path, _pen);
 			}
 		}
 
