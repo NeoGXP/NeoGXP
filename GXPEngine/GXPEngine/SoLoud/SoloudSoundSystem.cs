@@ -54,13 +54,13 @@ namespace GXPEngine.Core
             //empty
         }
 
-        public override uint PlaySound(IntPtr id, uint channelId, bool paused)
+        public override uint PlaySound(IntPtr id, bool paused)
         {
             if (id == IntPtr.Zero) return 0;
             return Soloud.Soloud_playEx(_device, id, 1.0f, 0.0f, paused, 0);
         }
 
-		public override uint PlaySound(IntPtr id, uint channelId, bool paused, float volume, float pan)
+		public override uint PlaySound(IntPtr id, bool paused, float volume, float pan)
 		{
 			if (id == IntPtr.Zero) return 0;
 			return Soloud.Soloud_playEx(_device, id, volume, pan, paused, 0);

@@ -1,4 +1,3 @@
-//#define USE_FMOD_AUDIO
 #define STRETCH_ON_RESIZE
 
 using System;
@@ -182,11 +181,7 @@ namespace GXPEngine.Core {
 		}
 
 		private static void InitializeSoundSystem() {
-#if USE_FMOD_AUDIO
-			_soundSystem = new FMODSoundSystem();
-#else
 			_soundSystem = new SoloudSoundSystem();
-#endif
 			_soundSystem.Init();
 		}
 

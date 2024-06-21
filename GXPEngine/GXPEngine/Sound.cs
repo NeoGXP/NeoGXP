@@ -1,6 +1,4 @@
-﻿//#define USE_FMOD_AUDIO
-
-using System;
+﻿using System;
 using System.Threading;
 using System.Collections.Generic;
 using GXPEngine.Core;
@@ -36,14 +34,18 @@ namespace GXPEngine
         /// <param name='cached'>
         /// If set to <c>true</c>, the sound will be stored in cache, preserving memory when creating the same sound multiple times.
         /// </param>
-        public Sound( String filename, bool looping = false, bool streaming = false)
+        public Sound(string filename, bool looping = false, bool streaming = false)
 		{
             _system = GLContext.soundSystem;
 
             if (streaming) {
                 _id = _system.CreateStream(filename, looping);
 			} else {
-                if (!_soundCache.ContainsKey(filename))
+                if (_soundCache.TryGetValue(filename, out IntPtr value))
+                {
+                     _id = value;
+                }
+                else
                 {
                     _id = _system.LoadSound(filename, looping);
                     if (_id == IntPtr.Zero)
@@ -52,13 +54,9 @@ namespace GXPEngine
                     }
                     _soundCache[filename] = _id;
                 }
-                else
-                {
-                    _id = _soundCache[filename];
-                }
-			}
+            }
 		}
-		
+
 		~Sound()
 		{
 		}
@@ -70,27 +68,10 @@ namespace GXPEngine
 		/// When set to <c>true</c>, the sound is set up, but remains paused.
 		/// You can use this to set frequency, panning and volume before playing the sound.
 		/// </param>
-		/// <param name='channelId'>
-		/// When in range 0...31, the selected channel will be used. If it already
-		/// contains a playing sound, that sound will be stopped.
-		/// When set to -1 (the default), the next free channel will be used.
-		/// However, when all channels are in use, Sound.Play will silently fail.
-		/// </param>
-		public SoundChannel Play( bool paused = false, uint channelId=0, float volume=1, float pan=0)
+		public SoundChannel Play(bool paused = false, float volume=1, float pan=0)
 		{
-
-			#if !USE_FMOD_AUDIO
-			if (channelId != 0)
-			{
-				throw new Exception("Channel ID is not supported when using SoLoud audio. Please change #define in GLContext.cs!");
-			}
-			#else
-			if (channelId==0) {
-			channelId=4294967295; // -1 basically (since FMOD actually works with ints), which means: pick a free channel.
-			}
-			#endif
-			uint channelID = _system.PlaySound(_id, channelId, paused, volume, pan);
-			SoundChannel soundChannel = new SoundChannel( channelID );
+			uint channelID = _system.PlaySound(_id, paused, volume, pan);
+			SoundChannel soundChannel = new SoundChannel(channelID);
 			return soundChannel;
 		}
 	}
