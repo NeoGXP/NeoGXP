@@ -172,4 +172,7 @@ FEATURE:
 * Adding System reference for easy access to default libraries
 
 ----- 2023/2024 (Road towards NeoGXP) version (TechnicJelle):
+* Changed asset location from bin folder to asset folder in project root itself
 * Added SaveFrame function, to save the last rendered frame to an image on disk
+* Removed FontStyle parameter when loading in a font file with Utils.LoadFont
+* Removed Underline and Strikeout font styles
