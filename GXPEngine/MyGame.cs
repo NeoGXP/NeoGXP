@@ -9,6 +9,7 @@ public class MyGame : Game
 	private readonly AnimationSprite _barry;	// Create an animation sprite
 	private readonly Sprite _circle;	// Create a sprite to draw a circle
 	private readonly Sound _ping;	// Create a sound
+	private readonly SoundChannel _bgm;	// Create a background music
 
 	private Vector2 _dir;
 	private int _frameCount = 0;
@@ -63,6 +64,11 @@ public class MyGame : Game
 		this.AddChild(_circle);
 
 		_ping = new Sound("assets/ping.wav");
+
+		Sound bgm = new Sound("assets/file.ogg", true);
+		// Sound bgm = new Sound("assets/file.wav", true);
+		_bgm = bgm.Play();
+		Console.WriteLine(_bgm.Frequency);
 	}
 
 	void Update()
@@ -103,6 +109,19 @@ public class MyGame : Game
 		Gizmos.SetColor(0, 255, 0);
 		Gizmos.DrawArrow(150, 400, _dir.x * 50, _dir.y * 50);
 
+		// BGM
+		_bgm.Pan = (Input.mouseX - width / 2f) / (width / 2f);
+		_bgm.Volume = Input.mouseY / -(float)height;
+		if (Input.GetKeyDown(Key.SPACE))
+		{
+			_bgm.IsPaused = !_bgm.IsPaused;
+		}
+		_bgm.Frequency = 44100 + Input.mouseX * 100; //pain
+		if (Input.GetKeyDown(Key.M))
+		{
+			_bgm.Mute = !_bgm.Mute;
+		}
+
 		if (_frameCount == 1)
 		{
 			SaveFrame("test.png");
@@ -112,6 +131,6 @@ public class MyGame : Game
 
 	static void Main()							// Main() is the first method that's called when the program is run
 	{
-		new ShapeTest().Start();					// Create a "MyGame" and start it
+		new MyGame().Start();					// Create a "MyGame" and start it
 	}
 }
