@@ -1,20 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ConsolePause>False</ConsolePause>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <DebugType>none</DebugType>
-    <OutputPath>bin\Release</OutputPath>
-    <ConsolePause>False</ConsolePause>
+    <LangVersion>default</LangVersion>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Silk.NET.GLFW" Version="2.21.0"/>
@@ -22,10 +14,10 @@
     <PackageReference Include="SkiaSharp" Version="3.0.0-preview.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="lib\**">
+    <Content Include="lib/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="assets\**">
+    <Content Include="assets/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
