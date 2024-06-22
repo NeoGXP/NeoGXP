@@ -9,6 +9,7 @@ public class MyGame : Game
 	private readonly AnimationSprite _barry;	// Create an animation sprite
 	private readonly Sprite _circle;	// Create a sprite to draw a circle
 	private readonly Sound _ping;	// Create a sound
+	private readonly Sound _pingLooped; // Create a looped sound
 	private readonly SoundChannel _bgm;	// Create a background music
 
 	private Vector2 _dir;
@@ -63,10 +64,11 @@ public class MyGame : Game
 		_circle.SetOrigin(_circle.width/2f, _circle.height/2f);
 		this.AddChild(_circle);
 
-		_ping = new Sound("assets/ping.wav");
+		_ping = new Sound("assets/ping.wav", looping:false);
+		_pingLooped = new Sound("assets/ping.wav", looping:true);
 
-		Sound bgm = new Sound("assets/file.ogg", true);
-		// Sound bgm = new Sound("assets/file.wav", true);
+		Sound bgm = new Sound("assets/file.ogg", streaming:true, looping:true);
+		// Sound bgm = new Sound("assets/file.wav", streaming:true, looping:true);
 		_bgm = bgm.Play();
 		Console.WriteLine(_bgm.Frequency);
 	}
@@ -98,6 +100,11 @@ public class MyGame : Game
 		if (Input.GetMouseButtonDown(0))
 		{
 			_ping.Play();
+		}
+		if (Input.GetMouseButtonDown(1))
+		{
+			SoundChannel play = _pingLooped.Play();
+			play.Frequency *= 2;
 		}
 
 		// Dir
