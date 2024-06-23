@@ -10,8 +10,8 @@ namespace GXPEngine.Core
         public abstract IntPtr CreateStream(string filename, bool looping);
         public abstract IntPtr LoadSound(string filename, bool looping);
         public abstract void Step();
-        public abstract uint PlaySound(IntPtr id, bool paused);
-		public abstract uint PlaySound(IntPtr id, bool paused, float volume, float pan);
+        public abstract SoundChannel PlaySound(IntPtr id, bool paused);
+		public abstract SoundChannel PlaySound(IntPtr id, bool paused, float volume, float pan);
 
         public abstract float GetChannelFrequency(uint channelId);
         public abstract void SetChannelFrequency(uint channelId, float frequency);

@@ -70,8 +70,7 @@ namespace GXPEngine
 		/// </param>
 		public SoundChannel Play(bool paused = false, float volume=1, float pan=0)
 		{
-			uint channelID = _system.PlaySound(_id, paused, volume, pan);
-			SoundChannel soundChannel = new SoundChannel(channelID);
+			SoundChannel soundChannel = _system.PlaySound(_id, paused, volume, pan);
 			return soundChannel;
 		}
 	}
