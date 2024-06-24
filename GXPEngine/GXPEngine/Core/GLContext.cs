@@ -181,7 +181,7 @@ namespace GXPEngine.Core {
 		}
 
 		private static void InitializeSoundSystem() {
-			_soundSystem = new SoloudSoundSystem();
+			_soundSystem = new RAudioSoundSystem();
 			_soundSystem.Init();
 		}
 

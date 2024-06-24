@@ -8,21 +8,15 @@ namespace GXPEngine
 	/// </summary>
 	public class SoundChannel
 	{
-		private uint _id = 0;
+		private IRAudio _rAudio;
         private SoundSystem _system;
         private float _volume = 1f;
         private bool _isMuted = false;
 
-		public uint ID {
-			get {
-				return _id;
-			}
-		}
-
-        public SoundChannel( uint id )
+        public SoundChannel(IRAudio rAudio)
 		{
             _system = GLContext.soundSystem;
-            _id = id;
+            _rAudio = rAudio;
         }
 
         /// <summary>
@@ -35,12 +29,12 @@ namespace GXPEngine
 		{
 			get 
 			{
-                float frequency = _system.GetChannelFrequency(_id);
+                float frequency = _system.GetChannelFrequency(_rAudio);
 				return frequency;
 			}
 			set
 			{
-                _system.SetChannelFrequency(_id, value);
+                _system.SetChannelFrequency(_rAudio, value);
 			}
 		}
 
@@ -61,11 +55,11 @@ namespace GXPEngine
                 _isMuted = value;
                 if (value)
                 {
-                    _system.SetChannelVolume(_id, 0f);
+                    _system.SetChannelVolume(_rAudio, 0f);
                 }
                 else
                 {
-                    _system.SetChannelVolume(_id, _volume);
+                    _system.SetChannelVolume(_rAudio, _volume);
                 }
             }
 		}
@@ -77,11 +71,11 @@ namespace GXPEngine
 		{
 			get 
 			{
-                return _system.GetChannelPan(_id);
+                return _system.GetChannelPan(_rAudio);
 			}
 			set
 			{
-                _system.SetChannelPan(_id, value);
+                _system.SetChannelPan(_rAudio, value);
 			}
 		}		
 
@@ -95,11 +89,11 @@ namespace GXPEngine
 		{
 			get 
 			{
-                return _system.GetChannelPaused(_id);
+                return _system.GetChannelPaused(_rAudio);
 			}
 			set
 			{
-                _system.SetChannelPaused(_id, value);
+                _system.SetChannelPaused(_rAudio, value);
 			}
 		}
 
@@ -113,17 +107,24 @@ namespace GXPEngine
 		{
 			get 
 			{
-                return _system.ChannelIsPlaying(_id);
+                return _system.ChannelIsPlaying(_rAudio);
 			}
-		}		
+		}
+
+		/// <summary>
+		/// (Re)start the channel.
+		/// </summary>
+		public void Play()
+		{
+			_rAudio.Play();
+		}
 		
 		/// <summary>
 		/// Stop the channel.
 		/// </summary>
 		public void Stop()
 		{
-            _system.StopChannel(_id);
-			_id = 0;
+            _system.StopChannel(_rAudio);
 		}
 	
 		/// <summary>
@@ -136,14 +137,14 @@ namespace GXPEngine
 		{
 			get 
 			{
-                return _system.GetChannelVolume(_id);
+                return _system.GetChannelVolume(_rAudio);
 			}
 			set
 			{
                 _volume = value;
                 if (!_isMuted)
                 {
-                    _system.SetChannelVolume(_id, value);
+                    _system.SetChannelVolume(_rAudio, value);
                 }
 			}
 		}

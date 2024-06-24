@@ -9,14 +9,12 @@
     <Platforms>x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Raylib-cs" Version="6.1.0" />
     <PackageReference Include="Silk.NET.GLFW" Version="2.21.0"/>
     <PackageReference Include="Silk.NET.OpenGL.Legacy" Version="2.21.0"/>
     <PackageReference Include="SkiaSharp" Version="3.0.0-preview.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="lib/**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="assets/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

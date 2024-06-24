@@ -7,21 +7,21 @@ namespace GXPEngine.Core
     {
         public abstract void Init();
         public abstract void Deinit();
-        public abstract IntPtr CreateStream(string filename, bool looping);
-        public abstract IntPtr LoadSound(string filename, bool looping);
+        public abstract FileRStream CreateStream(string filename, bool looping);
+        public abstract FileRSound LoadSound(string filename, bool looping);
         public abstract void Step();
-        public abstract SoundChannel PlaySound(IntPtr id, bool paused);
-		public abstract SoundChannel PlaySound(IntPtr id, bool paused, float volume, float pan);
+        public abstract SoundChannel PlaySound(IRAudio audio, bool paused);
+		public abstract SoundChannel PlaySound(IRAudio audio, bool paused, float volume, float pan);
 
-        public abstract float GetChannelFrequency(uint channelId);
-        public abstract void SetChannelFrequency(uint channelId, float frequency);
-        public abstract float GetChannelPan(uint channelId);
-        public abstract void SetChannelPan(uint channelId, float pan);
-        public abstract float GetChannelVolume(uint channelId);
-        public abstract void SetChannelVolume(uint channelId, float volume);
-        public abstract bool GetChannelPaused(uint channelId);
-        public abstract void SetChannelPaused(uint channelId, bool pause);
-        public abstract bool ChannelIsPlaying(uint channelId);
-        public abstract void StopChannel(uint channelId);
+        public abstract float GetChannelFrequency(IRAudio audio);
+        public abstract void SetChannelFrequency(IRAudio audio, float frequency);
+        public abstract float GetChannelPan(IRAudio audio);
+        public abstract void SetChannelPan(IRAudio audio, float pan);
+        public abstract float GetChannelVolume(IRAudio audio);
+        public abstract void SetChannelVolume(IRAudio audio, float volume);
+        public abstract bool GetChannelPaused(IRAudio audio);
+        public abstract void SetChannelPaused(IRAudio audio, bool pause);
+        public abstract bool ChannelIsPlaying(IRAudio audio);
+        public abstract void StopChannel(IRAudio audio);
     }
 }
