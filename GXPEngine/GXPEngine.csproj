@@ -13,6 +13,7 @@
     <PackageReference Include="Silk.NET.GLFW" Version="2.21.0"/>
     <PackageReference Include="Silk.NET.OpenGL.Legacy" Version="2.21.0"/>
     <PackageReference Include="SkiaSharp" Version="3.0.0-preview.3.1" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.0.0-preview.3.1" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets/**">
