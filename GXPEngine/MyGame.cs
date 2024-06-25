@@ -67,8 +67,9 @@ public class MyGame : Game
 		_ping = new Sound("assets/ping.wav", looping:false);
 		_pingLooped = new Sound("assets/ping.wav", looping:true);
 
-		Sound bgm = new Sound("assets/file.ogg", streaming:true, looping:true);
-		// Sound bgm = new Sound("assets/file.wav", streaming:true, looping:true);
+		//"Hideaway, 80's edition" by Vindsvept – released under CC-BY 4.0. www.youtube.com/Vindsvept
+		// Licence: https://creativecommons.org/licenses/by/4.0/
+		Sound bgm = new Sound("assets/Vindsvept - Hideaway (80s Edition).ogg", streaming:true, looping:true);
 		_bgm = bgm.Play();
 		Console.WriteLine(_bgm.Frequency);
 	}
