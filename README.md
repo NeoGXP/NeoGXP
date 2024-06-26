@@ -18,6 +18,8 @@ proper, full-featured engine.
 2. Open the "GXPEngine.sln" file to open the project using Rider, Visual Studio or whichever other IDE you prefer
 
 ## Possible improvements (actively) being worked on
+- Warn user (with an exception?) when an asset could not be found.
+  - This should help when porting Legacy GXP games to NeoGXP due to the asset folder location change.
 - Run ReSharper to clean up the code, and make it all proper and consistent. 
 - Write and publish nice documentation
 - Turn this repo into a library & NuGet package
