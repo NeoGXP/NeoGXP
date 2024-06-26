@@ -31,6 +31,9 @@ proper, full-featured engine.
 - Support exporting games to Web
 - Support exporting games to mobile platforms
 - Various API changes and improvements
+- Include a proper Vector2 struct (look into piggy-backing off of System.Numerics and possibly Silk.NET.Maths)
+- Include an Angle struct
+- Include a Colour struct
 
 ## I have some ideas for new features!
 - Please [create an issue](https://github.com/TechnicJelle/NeoGXP/issues) and describe your idea in detail
