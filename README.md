@@ -1,6 +1,6 @@
 # NeoGXP (Formerly: GXPEngine)
 _Last update: 24-06-2024_  
-_Repo link: https://github.com/TechnicJelle/NeoGXP_
+_Repo link: https://github.com/NeoGXP/NeoGXP_
 
 This is NeoGXP. NeoGXP is a C# engine for simple 2D game creation.
 
@@ -23,7 +23,8 @@ proper, full-featured engine.
 - Run ReSharper to clean up the code, and make it all proper and consistent. 
 - Write and publish nice documentation
 - Turn this repo into a library & NuGet package
-- Create a new template project that uses NeoGXP as a library
+- Create a new GitHub Template Project that uses NeoGXP as a library
+- Create a template for the `dotnet new` tool
 - Write and publish a few small tutorial series
 - Switch from Legacy OpenGL to OpenGL 3.3
 - Switch from GLFW3 to SDL3
