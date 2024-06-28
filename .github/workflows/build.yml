@@ -28,6 +28,4 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Try to build the engine
-      run: dotnet build --configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+      run: dotnet build --configuration ${{ matrix.configuration }}
