@@ -11,6 +11,7 @@ jobs:
     name: Build on ${{ matrix.os }} in ${{ matrix.configuration }} mode
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         configuration: [Debug, Release]
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -25,11 +26,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v2
-      with:
-        msbuild-architecture: x64
 
     - name: Try to build the engine
       run: dotnet build --configuration=$env:Configuration
