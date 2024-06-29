@@ -39,3 +39,8 @@ proper, full-featured engine.
 ## I have some ideas for new features!
 - Please [create an issue](https://github.com/TechnicJelle/NeoGXP/issues) and describe your idea in detail
 - You can implement it yourself and [create a pull request](https://github.com/TechnicJelle/NeoGXP/fork)
+
+## Chat
+If you would like help with NeoGXP, or would like to discuss its development,
+please don't hesitate to join our Discord server! :)  
+https://discord.gg/edgeQAKCev
